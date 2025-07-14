@@ -11,6 +11,11 @@ import claimRoutes from "./src/routes/points.routes.js";
 
 dotenv.config();
 
+// helps in server monitoring in evry 14 minutes
+import cronJob from "./src/utils/cron.js"; 
+cronJob.start(); // starts the cron job
+
+
 const app = express();
 const server = http.createServer(app);
 

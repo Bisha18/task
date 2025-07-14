@@ -1,9 +1,11 @@
 import cron from "cron";
 import https from "https";
+import dotenv from "dotenv"
+dotenv.config
 
 const job = new cron.CronJob("*/14 * * * *", function () {
   https
-    .get("https://task-i8y8.onrender.com/api/users", (res) => {
+    .get(process.env.API_URL, (res) => {
       if (res.statusCode === 200) console.log("GET request sent successfully");
       else console.log("GET request failed", res.statusCode);
     })

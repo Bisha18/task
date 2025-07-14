@@ -21,7 +21,10 @@ const server = http.createServer(app);
 
 initSocket(server); // initializes Socket.IO with CORS
 
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:5173", "https://task-frontend-rank.vercel.app"],
+  credentials: true,
+}));
 app.use(express.json());
 
 // Routes

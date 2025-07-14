@@ -1,7 +1,7 @@
 import cron from "cron";
 import https from "https";
 import dotenv from "dotenv"
-dotenv.config(); // Corrected: Call dotenv.config() as a function
+dotenv.config(); 
 
 const job = new cron.CronJob("*/14 * * * *", function () {
   // Ensure process.env.API_URL is defined when deploying, e.g., for keep-alive pings.

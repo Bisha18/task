@@ -2,8 +2,6 @@ import express from "express";
 import http from "http";
 import dotenv from "dotenv";
 import cors from "cors";
-import mongoose from "mongoose";
-
 import { io, initSocket } from "./src/utils/socket.js";
 import { connectDB } from "./src/utils/db.js";
 import populateInitialUsers from "./src/utils/initialUsers.js";
@@ -30,6 +28,6 @@ connectDB().then(() => {
   populateInitialUsers(); // optional
   const PORT = process.env.PORT || 5000;
   server.listen(PORT, () => {
-    console.log(`✅ Server running on http://localhost:${PORT}`);
+    console.log(`✅ Server running on ${process.env.API_URL}`);
   });
 });

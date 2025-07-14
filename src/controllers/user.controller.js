@@ -1,37 +1,31 @@
 import User from "../model/user.model.js";
-import getRankedUsers from "../utils/rankedUser.js"
+import getRankedUsers from "../utils/rankedUser.js";
 import { io } from "../utils/socket.js";
 
-
-// get users in reverse sorted order
-export const getSortedUsers = async(req,res)=>{
+export const getSortedUsers = async (req, res) => {
   try {
-    const rankedUsers = await getRankedUsers();
-    res.json(rankedUsers);
+    const ranked = await getRankedUsers();
+    res.json(ranked);
   } catch (error) {
-    res.status(500).json({error:"Error getting ranked users"});
+    res.status(500).json({ error: "Error fetching users" });
   }
-}
+};
 
+export const addUsers = async (req, res) => {
+  const { username } = req.body;
+  if (!username) return res.status(400).json({ error: "Username is required" });
 
-// add user
-export const addUsers = async(req,res)=>{
-  const {username} = req.body;
-  if(!username) return res.status(400).json({error:"Username is required"});
   try {
-    const newUser = new User(
-      {
-        username,
-        totalPoints:0
-      }
-    )
-   await newUser.save();
+    const user = new User({ username, totalPoints: 0 });
+    await user.save();
 
-   const rankedUsers = await getRankedUsers();
-   io.emit('leaderboard_update',rankedUsers);
-   res.status(201).json(newUser);
+    const ranked = await getRankedUsers();
+    io.emit("leaderboard_update", ranked);
+    res.status(201).json(user);
   } catch (error) {
-    if(error.code === 11000) return res.status(400).json({error:"User already exists"});
-    res.status(500).json({error:"Error creating user"});
+    if (error.code === 11000) {
+      return res.status(400).json({ error: "User already exists" });
+    }
+    res.status(500).json({ error: "Error creating user" });
   }
-}
+};
